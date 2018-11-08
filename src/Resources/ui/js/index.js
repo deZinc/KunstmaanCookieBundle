@@ -45,7 +45,8 @@ export const asyncDomInitiator = AsyncDomInitiator.init;
 window.kmcc = {
     getKmccCookies,
     hasAllowedDataLayers,
-    asyncDomInitiator
+    asyncDomInitiator,
+    bootstrapCookieConsent
 };
 
 switch(true) {
@@ -56,7 +57,7 @@ switch(true) {
         document.addEventListener('DOMContentLoaded', bootstrapCookieConsent);
 }
 
-function bootstrapCookieConsent() {
+export function bootstrapCookieConsent() {
     // First check if the cookiebar SHOULD init.
     let cookiebarWrapper = document.querySelector('kuma-cookie-bar');
     if (cookiebarWrapper === null || cookiebarWrapper.innerHTML === '') {
@@ -104,7 +105,7 @@ function bootstrapCookieConsent() {
         // Get the content URL for the modal.
         let contentUrl = document.getElementById(KMCC_CONTENT_URL_ITEM_IDENTIFIER).value;
         get(contentUrl).then(({response: modalContent}) => {
-            
+
             new CookieModal({
                 configuration: {
                     modalContent,
@@ -113,7 +114,7 @@ function bootstrapCookieConsent() {
             });
             // If there are any of the basic components on the page now, these will init as well.
             // Double init is prevented on ./components/Component
-            initializeBasicComponents(isOnCookiePage); 
+            initializeBasicComponents(isOnCookiePage);
             // Init extended.
             initializeExtendedComponents(isOnCookiePage);
         });
