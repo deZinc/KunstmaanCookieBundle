@@ -90,9 +90,11 @@ class LegalCookieHelper
 
         $cookieConfig = $this->em->getRepository('KunstmaanCookieBundle:CookieConfig')->findLatestConfig();
 
-        // If version is different, expire cookie.
-        if (isset($cookie['cookie_version']) && $cookieConfig->getCookieVersion() !== $cookie['cookie_version']) {
-            $response->headers->clearCookie(self::LEGAL_COOKIE_NAME);
+        if (null !== $cookieConfig) {
+            // If version is different, expire cookie.
+            if (isset($cookie['cookie_version']) && $cookieConfig->getCookieVersion() !== $cookie['cookie_version']) {
+                $response->headers->clearCookie(self::LEGAL_COOKIE_NAME);
+            }
         }
 
         return $response;
@@ -145,18 +147,20 @@ class LegalCookieHelper
         $authenticated = false;
 
         $cookieConfig = $this->em->getRepository('KunstmaanCookieBundle:CookieConfig')->findLatestConfig();
-        $session = $request->getSession();
-
         if (null !== $cookieConfig) {
             if ($cookieConfig->isCookieBundleEnabled()) {
                 return true;
             }
         }
 
-        /** @var PostAuthenticationGuardToken $token */
-        if ($session->has(sprintf('_security_%s', $this->adminFirewallName))) {
-            $token = unserialize($session->get(sprintf('_security_%s', $this->adminFirewallName)));
-            $authenticated = $token->isAuthenticated();
+        if ($request->hasSession()) {
+            $session = $request->getSession();
+
+            /** @var PostAuthenticationGuardToken $token */
+            if ($session->isStarted() && $session->has(sprintf('_security_%s', $this->adminFirewallName))) {
+                $token = unserialize($session->get(sprintf('_security_%s', $this->adminFirewallName)));
+                $authenticated = $token->isAuthenticated();
+            }
         }
 
         return $authenticated;
