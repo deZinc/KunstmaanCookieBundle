@@ -57,7 +57,7 @@ class LegalController extends AbstractController
     }
 
     /**
-     * @Route("/detail/{internalName}", name="kunstmaancookiebundle_legal_detail")
+     * @Route("/detail/{internalName}", name="kunstmaancookiebundle_legal_detail", methods={"GET"}, condition="request.isXmlHttpRequest()")
      * @ParamConverter("cookieType", options={"mapping": {"internalName": "internalName"}})
      * @param Request    $request
      * @param CookieType $cookieType
