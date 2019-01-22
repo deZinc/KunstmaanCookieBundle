@@ -1,20 +1,22 @@
 services:
-  _defaults:
-    autowire: true
-    autoconfigure: true
-    public: false
-    bind:
-      $adminFirewallName: "%kunstmaan_admin.admin_firewall_name%"
+  Kunstmaan\CookieBundle\EventSubscriber\CookieBarEventSubscriber:
+      tags:
+        - { name: kernel.event_subscriber }
+      arguments:
+        - '@twig'
+        - '@kunstmaan_admin.adminroute.helper'
+        - '@kunstmaan.legal_cookie_helper'
 
-  _instanceof:
-    Kunstmaan\AdminBundle\Helper\Menu\MenuAdaptorInterface:
-      tags: [kunstmaan_admin.menu.adaptor]
+  Kunstmaan\CookieBundle\Helper\LegalCookieHelper:
+      arguments: ['@doctrine.orm.entity_manager', '%kunstmaan_admin.admin_firewall_name%']
 
-  Kunstmaan\CookieBundle\:
-    resource: '../../*'
-    exclude: '../../{Entity,Repository,Tests,Controller,Features,Resources}'
+  kunstmaan.legal_cookie_helper: '@Kunstmaan\CookieBundle\Helper\LegalCookieHelper'
 
-  Kunstmaan\CookieBundle\Controller\:
-    resource: '../../Controller/*'
-    autowire: true
-    public: true
+  Kunstmaan\CookieBundle\Twig\CookieTwigExtension:
+      arguments: ['@doctrine.orm.entity_manager', '@kunstmaan.legal_cookie_helper' ]
+      tags:
+          -  { name: 'twig.extension' }
+
+  Kunstmaan\CookieBundle\Helper\Menu\CookieMenuAdaptor:
+    tags:
+      -  { name: 'kunstmaan_admin.menu.adaptor' }
