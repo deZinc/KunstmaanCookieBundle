@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Class LegalController
@@ -52,6 +53,7 @@ class LegalController extends AbstractController
             [
                 'node' => $node,
                 'page' => $page,
+                'isV4' => Kernel::VERSION_ID >= 40000,
             ]
         );
     }
