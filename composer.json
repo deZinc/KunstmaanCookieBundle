@@ -16,10 +16,10 @@
         }
     ],
     "require": {
-        "php": ">=5.6",
-        "symfony/symfony": "~3.4 | ^4.0",
-        "doctrine/orm": "^2.2.3",
-        "sensio/generator-bundle": "~2.5|~3.0"
+        "php": "^7.1",
+        "doctrine/orm": "^2.5",
+        "sensio/generator-bundle": "~3.0",
+        "kunstmaan/bundles-cms": "^5.1",
     },
     "autoload": {
         "psr-4": {
