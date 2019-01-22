@@ -92,12 +92,12 @@ class LegalGenerator extends KunstmaanGenerator
 
         // Update homepage to add the Legal Folder Page as child.
         $homePage = $this->bundle->getPath().'/Entity/Pages/HomePage.php';
-        $phpCode = "            array(\n";
+        $phpCode = "            [\n";
         $phpCode .= "                'name' => 'Legal folder page',\n";
         $phpCode .= "                'class' => '".
             $this->bundle->getNamespace().
             "\\Entity\\Pages\\LegalFolderPage'\n";
-        $phpCode .= "            ),";
+        $phpCode .= '            ],'."\n        ";
 
         if (file_exists($homePage)) {
             // Fist convert to long array syntax for replacement.
@@ -106,8 +106,8 @@ class LegalGenerator extends KunstmaanGenerator
 
             $data = file_get_contents($homePage);
             $data = preg_replace(
-                '/(function\s*getPossibleChildTypes\s*\(\)\s*\{\s*return\s*array\s*\()/',
-                "$1\n$phpCode",
+                '/(function\s*getPossibleChildTypes\s*\(\)\s*\{\s*)(return\s*\[|return\s*array\()/',
+                "$1$2\n$phpCode",
                 $data
             );
 
@@ -169,12 +169,19 @@ class LegalGenerator extends KunstmaanGenerator
      */
     public function generatePagepartConfigs(array $parameters)
     {
-        $relPath = '/Resources/config/pageparts/';
-        $sourceDir = $this->skeletonDir.$relPath;
-        $targetDir = $this->bundle->getPath().$relPath;
+        // Configuration pageparts
+        if ($this->isSymfony4()) {
+            $targetDir = $this->container->getParameter('kernel.project_dir') . '/config/kunstmaancms/pageparts/';
+            $ext = '.yaml';
+        } else {
+            $targetDir = sprintf('%s/Resources/config/pageparts/', $bundle->getPath());
+            $ext = '.yml';
+        }
 
-        $this->renderSingleFile($sourceDir, $targetDir, 'legal_header.yml', $parameters, $this->overrideFiles);
-        $this->renderSingleFile($sourceDir, $targetDir, 'legal_main.yml', $parameters, $this->overrideFiles);
+        $sourceDir = sprintf('%s/Resources/config/pageparts/', $this->skeletonDir);
+
+        $this->renderSingleFile($sourceDir, $targetDir, 'legal_header'.$ext, $parameters, $this->overrideFiles);
+        $this->renderSingleFile($sourceDir, $targetDir, 'legal_main'.$ext, $parameters, $this->overrideFiles);
 
         $this->assistant->writeLine('Generating pagepart configuration : <info>OK</info>');
     }
@@ -186,11 +193,18 @@ class LegalGenerator extends KunstmaanGenerator
      */
     public function generatePagetemplateConfigs(array $parameters)
     {
-        $relPath = '/Resources/config/pagetemplates/';
-        $sourceDir = $this->skeletonDir.$relPath;
-        $targetDir = $this->bundle->getPath().$relPath;
+        // Configuration templates
+        if ($this->isSymfony4()) {
+            $targetDir = $this->container->getParameter('kernel.project_dir') . '/config/kunstmaancms/pagetemplates/';
+            $ext = '.yaml';
+        } else {
+            $targetDir = sprintf('%s/Resources/config/pagetemplates/', $bundle->getPath());
+            $ext = '.yml';
+        }
 
-        $this->renderSingleFile($sourceDir, $targetDir, 'legalpage.yml', $parameters, $this->overrideFiles);
+        $sourceDir = sprintf('%s/Resources/config/pagetemplates/', $this->skeletonDir);
+
+        $this->renderSingleFile($sourceDir, $targetDir, 'legalpage'.$ext, $parameters, $this->overrideFiles);
 
         $this->assistant->writeLine('Generating pagetemplate configuration : <info>OK</info>');
     }
@@ -203,9 +217,9 @@ class LegalGenerator extends KunstmaanGenerator
     public function generateTemplates(array $parameters)
     {
         // Pages
-        $relPath = '/Resources/views/Pages/LegalPage/';
-        $sourceDir = $this->skeletonDir.$relPath;
-        $targetDir = $this->bundle->getPath().$relPath;
+        $relPath = 'Pages/LegalPage';
+        $targetDir = sprintf('%s/%s/', $this->getTemplateDir($this->bundle), $relPath);
+        $sourceDir = sprintf('%s/Resources/views/%s/', $this->skeletonDir, $relPath);
 
         $this->renderSingleFile($sourceDir, $targetDir, '_content.html.twig', $parameters, $this->overrideFiles);
         $this->renderSingleFile($sourceDir, $targetDir, '_main.html.twig', $parameters, $this->overrideFiles);
@@ -214,8 +228,11 @@ class LegalGenerator extends KunstmaanGenerator
 
         $pageParts = ['LegalCenteredIconPagePart', 'LegalTipPagePart', 'LegalIconTextPagePart', 'LegalCookiesPagePart', 'LegalOptInPagePart'];
         foreach ($pageParts as $pagePart) {
-            $relPath = sprintf('/Resources/views/PageParts/%s/', $pagePart);
-            $this->renderFiles($this->skeletonDir.$relPath, $this->bundle->getPath().$relPath, $parameters, $this->overrideFiles);
+            $relPath = 'PageParts';
+            $targetDir = sprintf('%s/%s/%s/', $this->getTemplateDir($this->bundle), $relPath, $pagePart);
+            $sourceDir = sprintf('%s/Resources/views/%s/%s/', $this->skeletonDir, $relPath, $pagePart);
+
+            $this->renderFiles($sourceDir, $targetDir, $parameters, $this->overrideFiles);
         }
 
         $this->assistant->writeLine('Generating template files : <info>OK</info>');
