@@ -17,9 +17,12 @@
     ],
     "require": {
         "php": "^7.1",
-        "doctrine/orm": "^2.5",
-        "sensio/generator-bundle": "~3.0",
-        "kunstmaan/bundles-cms": "dev-master"
+        "kunstmaan/adminlist-bundle": "dev-master",
+        "kunstmaan/config-bundle": "dev-master",
+        "kunstmaan/media-bundle": "dev-master",
+        "kunstmaan/pagepart-bundle": "dev-master",
+        "kunstmaan/node-bundle": "dev-master",
+        "kunstmaan/generator-bundle": "dev-master",
     },
     "autoload": {
         "psr-4": {
