@@ -4,18 +4,15 @@
 
 .kmcc-cookie-bar {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    height: 100%;
-    overflow: auto;
-
-    display: none;
-
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
     z-index: $kmcc_z-cookie-bar;
 
-    padding: 35px 0 35px;
+    display: none;
+    padding: 24px;
+    height: auto;
+    overflow: auto;
 
     background: $kmcc_grey;
 
@@ -24,10 +21,7 @@
     h2 {
         margin: 0 0 30px;
 
-        font: {
-            size: 33px;
-        }
-
+        font-size: 33px;
         color: $kmcc_headings;
     }
 
@@ -36,15 +30,12 @@
     }
 
     @media (min-width: $kmcc_screen-md) {
-        bottom: 15px;
-        left: 15px;
-        right: 15px;
-
+        max-width: 488px;
         height: auto;
 
-        cursor: default;
-
         border-bottom: none;
+
+        cursor: default;
     }
 }
 
@@ -58,10 +49,10 @@
 
 .kmcc-cookie-bar__footer__preferences {
     display: flex;
-    margin-top: 20px;
-
+    flex-direction: column;
     justify-content: center;
     flex-wrap: wrap;
+    margin-top: 20px;
 
     text-align: center;
 
@@ -77,17 +68,11 @@
     }
 
     &__first {
-        display: none;
         width: 380px;
-        padding-right: 30px;
-
-        align-self: flex-end;
+        margin-bottom: 24px;
 
         font-size: 14px;
-
         line-height: 2;
-
-        order: 1;
 
         p {
             margin: 0;
@@ -103,15 +88,6 @@
             margin-top: 10px;
 
             font-size: 16px;
-            order: 2;
-
-            @media (min-width: $kmcc_screen-sm) {
-                display: none;
-            }
-        }
-
-        @media (min-width: $kmcc_screen-sm) {
-            display: block;
         }
     }
 
@@ -119,16 +95,11 @@
         display: flex;
         width: 100%;
         margin-top: 20px;
-
         flex-direction: column;
         justify-content: center;
         align-items: center;
 
-        font: {
-            size: 16px;
-        }
-
-        order: 1;
+        font-size: 16px;
 
         @media (min-width: $kmcc_screen-xs) {
             margin-top: 0;
@@ -137,7 +108,6 @@
         @media (min-width: $kmcc_screen-sm) {
             width: auto;
 
-            order: 2;
             align-items: flex-end;
         }
     }
