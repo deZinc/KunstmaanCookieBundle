@@ -51,6 +51,7 @@ window.kmcc = {
     getKmccCookies,
     hasAllowedDataLayers,
     asyncDomInitiator,
+    bootstrapCookieConsent
 };
 
 switch (true) {
@@ -62,7 +63,7 @@ switch (true) {
         document.addEventListener('DOMContentLoaded', bootstrapCookieConsent);
 }
 
-function bootstrapCookieConsent() {
+export function bootstrapCookieConsent() {
     // First check if the cookiebar SHOULD init.
     const cookiebarWrapper = document.querySelector('kuma-cookie-bar');
     if (cookiebarWrapper === null || cookiebarWrapper.innerHTML === '') {
@@ -107,8 +108,9 @@ function bootstrapCookieConsent() {
 
 
         // Get the content URL for the modal.
-        const contentUrl = document.getElementById(KMCC_CONTENT_URL_ITEM_IDENTIFIER).value;
-        get(contentUrl).then(({ response: modalContent }) => {
+        let contentUrl = document.getElementById(KMCC_CONTENT_URL_ITEM_IDENTIFIER).value;
+        get(contentUrl).then(({response: modalContent}) => {
+
             new CookieModal({
                 configuration: {
                     modalContent,

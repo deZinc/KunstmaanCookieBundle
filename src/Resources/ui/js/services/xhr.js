@@ -19,6 +19,7 @@ export function get(url) {
             };
 
             req.open('GET', url);
+            req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             req.send();
         });
     }
