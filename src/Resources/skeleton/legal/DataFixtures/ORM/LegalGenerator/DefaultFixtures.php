@@ -102,6 +102,8 @@ class DefaultFixtures extends AbstractFixture implements OrderedFixtureInterface
                 'language' => $locale,
                 'callback' => function (LegalFolderPage $page, NodeTranslation $translation, $seo) {
                     $translation->setTitle('Legal');
+
+                    $seo->setMetaRobots('noindex,nofollow');
                 },
             ];
         }
