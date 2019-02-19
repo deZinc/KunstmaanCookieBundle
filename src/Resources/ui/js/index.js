@@ -51,7 +51,7 @@ window.kmcc = {
     getKmccCookies,
     hasAllowedDataLayers,
     asyncDomInitiator,
-    bootstrapCookieConsent
+    bootstrapCookieConsent,
 };
 
 switch (true) {
@@ -108,9 +108,8 @@ export function bootstrapCookieConsent() {
 
 
         // Get the content URL for the modal.
-        let contentUrl = document.getElementById(KMCC_CONTENT_URL_ITEM_IDENTIFIER).value;
-        get(contentUrl).then(({response: modalContent}) => {
-
+        const contentUrl = document.getElementById(KMCC_CONTENT_URL_ITEM_IDENTIFIER).value;
+        get(contentUrl).then(({ response: modalContent }) => {
             new CookieModal({
                 configuration: {
                     modalContent,
