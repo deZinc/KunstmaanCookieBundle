@@ -2,7 +2,6 @@
 
 namespace {{ namespace }}\Entity\PageParts;
 
-use ArrayObject;
 use Doctrine\ORM\Mapping as ORM;
 use Kunstmaan\FormBundle\Entity\FormSubmissionFieldTypes\BooleanFormSubmissionField;
 use Kunstmaan\FormBundle\Entity\PageParts\AbstractFormPagePart;
@@ -86,10 +85,10 @@ class LegalOptInPagePart extends AbstractFormPagePart
      * Modify the form with the fields of the current page part
      *
      * @param FormBuilderInterface $formBuilder The form builder
-     * @param ArrayObject          $fields      The fields
+     * @param \ArrayObject          $fields      The fields
      * @param int                  $sequence    The sequence of the form field
      */
-    public function adaptForm(FormBuilderInterface $formBuilder, ArrayObject $fields, $sequence)
+    public function adaptForm(FormBuilderInterface $formBuilder, \ArrayObject $fields, $sequence)
     {
         $bfsf = new BooleanFormSubmissionField();
         $bfsf->setFieldName('field_'.$this->getUniqueId());
@@ -127,7 +126,7 @@ class LegalOptInPagePart extends AbstractFormPagePart
      */
     public function getDefaultView()
     {
-        return '{{ bundle.getName() }}:PageParts:LegalOptInPagePart/view.html.twig';
+        return '{% if not isV4 %}{{ bundle.getName() }}:{%endif%}PageParts{% if not isV4 %}:{% else %}/{% endif %}LegalOptInPagePart/view.html.twig';
     }
 
     /**

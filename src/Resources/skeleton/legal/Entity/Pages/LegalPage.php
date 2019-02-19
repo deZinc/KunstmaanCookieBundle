@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Kunstmaan\NodeBundle\Entity\AbstractPage;
 use Kunstmaan\PagePartBundle\Helper\HasPageTemplateInterface;
 use Kunstmaan\NodeBundle\Controller\SlugActionInterface;
+use Kunstmaan\CookieBundle\Controller\LegalController;
 use {{ namespace }}\Form\Pages\LegalPageAdminType;
 
 /**
@@ -40,8 +41,8 @@ class LegalPage extends AbstractPage implements HasPageTemplateInterface, SlugAc
     public function getPagePartAdminConfigurations()
     {
         return [
-            '{{ bundle.getName() }}:legal_header',
-            '{{ bundle.getName() }}:legal_main',
+            '{% if not isV4 %}{{ bundle.getName() }}:{%endif%}legal_header',
+            '{% if not isV4 %}{{ bundle.getName() }}:{%endif%}legal_main',
         ];
     }
 
@@ -50,7 +51,7 @@ class LegalPage extends AbstractPage implements HasPageTemplateInterface, SlugAc
      */
     public function getPageTemplates()
     {
-        return array('{{ bundle.getName() }}:legalpage');
+        return ['{% if not isV4 %}{{ bundle.getName() }}:{%endif%}legalpage'];
     }
 
     /**
@@ -58,7 +59,7 @@ class LegalPage extends AbstractPage implements HasPageTemplateInterface, SlugAc
      */
     public function getDefaultView()
     {
-        return '{{ bundle.getName() }}:Pages\LegalPage:view.html.twig';
+        return '{% if not isV4 %}{{ bundle.getName() }}:{%endif%}Pages/LegalPage{% if not isV4 %}:{% else %}/{% endif %}view.html.twig';
     }
 
     /**
@@ -66,6 +67,6 @@ class LegalPage extends AbstractPage implements HasPageTemplateInterface, SlugAc
      */
     public function getControllerAction()
     {
-        return 'KunstmaanCookieBundle:Legal:legalPage';
+        return LegalController::class.'::legalPage';
     }
 }

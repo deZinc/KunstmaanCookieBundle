@@ -127,6 +127,6 @@ EOT
      */
     protected function createGenerator()
     {
-        return new LegalGenerator($this->fileSystem, $this->registry, '/legal', $this->assistant);
+        return new LegalGenerator($this->fileSystem, $this->registry, '/legal', $this->assistant, $this->getContainer());
     }
 }
