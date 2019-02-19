@@ -23,7 +23,7 @@ class LegalCookiesPagePart extends AbstractPagePart
      */
     public function getDefaultView()
     {
-        return '{{ bundle.getName() }}:PageParts:LegalCookiesPagePart/view.html.twig';
+        return '{% if not isV4 %}{{ bundle.getName() }}:{%endif%}PageParts{% if not isV4 %}:{% else %}/{% endif %}LegalCookiesPagePart/view.html.twig';
     }
 
     /**

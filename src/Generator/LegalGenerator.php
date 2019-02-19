@@ -49,6 +49,7 @@ class LegalGenerator extends KunstmaanGenerator
             'bundle_name' => $this->bundle->getName(),
             'prefix' => $this->prefix,
             'demosite' => $this->demosite,
+            'isV4' => $this->isSymfony4(),
         ];
 
         $this->generateAssets();
@@ -172,16 +173,14 @@ class LegalGenerator extends KunstmaanGenerator
         // Configuration pageparts
         if ($this->isSymfony4()) {
             $targetDir = $this->container->getParameter('kernel.project_dir') . '/config/kunstmaancms/pageparts/';
-            $ext = '.yaml';
         } else {
             $targetDir = sprintf('%s/Resources/config/pageparts/', $bundle->getPath());
-            $ext = '.yml';
         }
 
         $sourceDir = sprintf('%s/Resources/config/pageparts/', $this->skeletonDir);
 
-        $this->renderSingleFile($sourceDir, $targetDir, 'legal_header'.$ext, $parameters, $this->overrideFiles);
-        $this->renderSingleFile($sourceDir, $targetDir, 'legal_main'.$ext, $parameters, $this->overrideFiles);
+        $this->renderSingleFile($sourceDir, $targetDir, 'legal_header.yml', $parameters, $this->overrideFiles);
+        $this->renderSingleFile($sourceDir, $targetDir, 'legal_main.yml', $parameters, $this->overrideFiles);
 
         $this->assistant->writeLine('Generating pagepart configuration : <info>OK</info>');
     }
@@ -196,15 +195,13 @@ class LegalGenerator extends KunstmaanGenerator
         // Configuration templates
         if ($this->isSymfony4()) {
             $targetDir = $this->container->getParameter('kernel.project_dir') . '/config/kunstmaancms/pagetemplates/';
-            $ext = '.yaml';
         } else {
             $targetDir = sprintf('%s/Resources/config/pagetemplates/', $bundle->getPath());
-            $ext = '.yml';
         }
 
         $sourceDir = sprintf('%s/Resources/config/pagetemplates/', $this->skeletonDir);
 
-        $this->renderSingleFile($sourceDir, $targetDir, 'legalpage'.$ext, $parameters, $this->overrideFiles);
+        $this->renderSingleFile($sourceDir, $targetDir, 'legalpage.yml', $parameters, $this->overrideFiles);
 
         $this->assistant->writeLine('Generating pagetemplate configuration : <info>OK</info>');
     }

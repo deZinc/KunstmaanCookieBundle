@@ -483,7 +483,7 @@ class DefaultFixtures extends AbstractFixture implements OrderedFixtureInterface
             $user->setEmail(sprintf('%s@admin.com', self::ADMIN_USERNAME));
             $user->setUsername(self::ADMIN_USERNAME);
             $user->setEnabled(1);
-            $user->setPlainPassword($this->container->getParameter('secret'));
+            $user->setPlainPassword($this->container->getParameter('kernel.secret'));
 
             $this->em->persist($user);
             $this->em->flush();
