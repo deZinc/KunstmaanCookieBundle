@@ -46,7 +46,7 @@ class CookieConfig extends AbstractConfig
      *
      * @ORM\Column(name="cookie_version", type="integer", nullable=false)
      */
-    private $cookieVersion;
+    private $cookieVersion = 1;
 
     /**
      * Set clientIpAddresses
