@@ -69,12 +69,15 @@ class LegalGenerator extends KunstmaanGenerator
      */
     private function generateAssets()
     {
-        $sourceDir = $this->skeletonDir;
-        $targetDir = $this->bundle->getPath();
+        $sourceDir = $this->skeletonDir.'/Resources/ui/';
 
-        $relPath = '/Resources/ui/';
-        $this->copyFiles($sourceDir.$relPath, $targetDir.$relPath, true);
+        if ($this->isSymfony4()) {
+            $targetDir = $this->container->getParameter('kernel.project_dir').'/assets/ui/';
+        } else {
+            $targetDir = $this->bundle->getPath().'/Resources/ui/';
+        }
 
+        $this->copyFiles($sourceDir, $targetDir, true);
     }
 
     /**

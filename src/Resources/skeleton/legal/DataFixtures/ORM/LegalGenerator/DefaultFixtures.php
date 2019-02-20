@@ -17,6 +17,7 @@ use Kunstmaan\UtilitiesBundle\Helper\Slugifier;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use \Symfony\Component\HttpKernel\Kernel;
 use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Translatable\Entity\Repository\TranslationRepository;
 use Gedmo\Translatable\Entity\Translation;
@@ -78,8 +79,8 @@ class DefaultFixtures extends AbstractFixture implements OrderedFixtureInterface
         $this->pagePartCreator = $this->container->get('kunstmaan_pageparts.pagepart_creator_service');
         $this->translator = $this->container->get('translator.default');
         $this->slugifier = $this->container->get('kunstmaan_utilities.slugifier');
-        $this->requiredLocales = explode('|', $this->container->getParameter('requiredlocales'));
-        $this->defaultLocale = $this->container->getParameter('defaultlocale');
+        $this->requiredLocales = explode('|', $this->container->getParameter('kunstmaan_admin.required_locales'));
+        $this->defaultLocale = $this->container->getParameter('kunstmaan_admin.default_locale');
         $this->em = $this->container->get('doctrine.orm.entity_manager');
         $this->translationRepo = $this->em->getRepository(Translation::class);
 
@@ -268,7 +269,12 @@ class DefaultFixtures extends AbstractFixture implements OrderedFixtureInterface
             $pageparts = [];
 
             $folder = $this->manager->getRepository('KunstmaanMediaBundle:Folder')->findOneBy(['rel' => 'image']);
-            $imgDir = __DIR__.'/../../../Resources/ui/img/legal/';
+
+            if (Kernel::VERSION_ID < 40000 ) {
+                $imgDir = __DIR__.'/../../../Resources/ui/img/legal/';
+            } else {
+                $imgDir = $this->container->getParameter('kernel.project_dir').'/assets/ui/img/legal/';
+            }
 
             $icon = $this->mediaCreator->createFile($imgDir.'cookie.svg', $folder->getId());
             $pageparts['legal_header'][] = $this->pagePartCreator->getCreatorArgumentsForPagePartAndProperties(
